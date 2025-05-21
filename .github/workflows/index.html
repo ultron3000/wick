@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>John Wick</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background: black;
+      color: #ffcc00;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2em;
+    }
+    .movies {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .movie {
+      background: #222;
+      border: 2px solid #ffcc00;
+      border-radius: 12px;
+      width: 200px;
+      padding: 10px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .movie:hover {
+      transform: scale(1.05);
+      background: #333;
+    }
+    .movie img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .movie-title {
+      margin-top: 10px;
+      font-size: 1em;
+      font-weight: bold;
+    }
+  
+    @media (max-width: 600px) {
+      .movies {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+      }
+      .movie {
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .movie img {
+        height: auto;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+<h1>🚨 John Wick Universe</h1>
+
+<div class="movies" id="movies"></div>
+
+<script>
+const movies = [
+  { title: "John Wick", video: "https://sh9f.mcentirecajigas.sbs:443/v4/np/ijh13/index-f1-v1-a1.txt", image: "https://cdn.moviescore.com/posters/56888.jpg" },
+  { title: "John Wick: Chapter 2", video: "https://p2qxmiasglj.cdn-centaurus.com:443/hls2/01/02717/jrylantvz9bl_n/index-v1-a1.m3u8?t=_HsqopP3k8JIeSgjyUlU08R23XUMvZceUAOCbHIpjB8&s=1747827164&e=129600&f=14122836&srv=Gy4KXLg7mXRDXE7k&i=0.4&sp=500&p1=Gy4KXLg7mXRDXE7k&p2=Gy4KXLg7mXRDXE7k&asn=24554", image: "https://lh6.googleusercontent.com/proxy/fVYNQGsCe5bl-8gyTWZkvGaR9JNvA3xj2OGZ_tEvT1QFPruXjSDJWNWD5yas-RBZ9WHXFpkDnsDzdfYH0wnmmZKLg4ztLbFsk3yMUPNuwFqxjLh-dn90tcPDhg" },
+  { title: "John Wick: Chapter 3-Parabellum", video: "https://cv9fqnu812v.cdn-centaurus.com/hls2/01/01011/2w6cyluabouo_h/master.m3u8?t=ZmhV_dntApNOiO06YNxZzja06NWh-YZ0-9aah-a2XMc&s=1747827427&e=129600&f=5058857&srv=z13jtbat10fa85i&i=0.4&sp=500&p1=z13jtbat10fa85i&p2=z13jtbat10fa85i&asn=24554", image: "https://e0.pxfuel.com/wallpapers/617/571/desktop-wallpaper-john-wick-chapter-3-parabellum-john-wick-cool.jpg" },
+  { title: "John Wick: Chapter 4", video: "https://sojg.kimberlygxjeum.sbs/v4/m9/pr3nq/cf-master.txt?v=1729939370", image: "https://posterspy.com/wp-content/uploads/2024/02/John-Wick-4-Alternative-Movie-Poster.jpg" },
+  ];
+
+const container = document.getElementById('movies');
+movies.forEach((movie, index) => {
+  const div = document.createElement('div');
+  div.className = 'movie';
+  div.innerHTML = `
+    <img src="${movie.image}" alt="${movie.title}">
+    <div class="movie-title">${movie.title}</div>
+  `;
+  div.onclick = () => {
+    const url = `player.html?title=${encodeURIComponent(movie.title)}&video=${encodeURIComponent(movie.video)}&index=${index}`;
+    window.location.href = url;
+  };
+  container.appendChild(div);
+});
+</script>
+
+</body>
+</html>
