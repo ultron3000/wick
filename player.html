@@ -88,13 +88,30 @@
         padding: 0.5rem;
       }
       .control-btn {
-        padding: 0.5rem;
+        padding: 0.3rem;
+        min-width: 32px;
       }
       .volume-container {
         display: none;
       }
       .mobile-volume {
         display: block;
+        margin: 8px 0;
+      }
+      /* Improve spacing for mobile controls */
+      #controls-container .flex.items-center {
+        gap: 2px;
+      }
+      /* Hide rewind/forward text on small screens */
+      .progress-container {
+        margin-bottom: 8px;
+      }
+      .tooltip {
+        display: none;
+      }
+      /* Full width bottom bar */
+      .video-container {
+        margin-bottom: 4px;
       }
     }
   </style>
