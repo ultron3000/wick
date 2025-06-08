@@ -5,69 +5,134 @@
   <title>John Wick</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    :root {
+      --primary: #ffcc00;
+      --primary-dark: #e6b800;
+      --dark: #121212;
+      --darker: #0a0a0a;
+      --light: #f8f8f8;
+      --gray: #333;
+    }
+    
     body {
-      background: black;
-      color: #ffcc00;
-      font-family: Arial, sans-serif;
+      background: var(--darker);
+      color: var(--light);
+      font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
       margin: 0;
-      padding: 20px;
+      padding: 30px 20px;
+      min-height: 100vh;
       text-align: center;
     }
+    
     h1 {
-      margin-bottom: 20px;
-      font-size: 2em;
+      margin: 0 0 30px;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      letter-spacing: 1px;
     }
+    
+    h1::after {
+      content: "";
+      display: block;
+      width: 100px;
+      height: 3px;
+      background: var(--primary);
+      margin: 15px auto 0;
+      border-radius: 3px;
+    }
+    
     .movies {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 25px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
     }
+    
     .movie {
-      background: #222;
-      border: 2px solid #ffcc00;
-      border-radius: 12px;
-      width: 200px;
-      padding: 10px;
+      background: var(--dark);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
       cursor: pointer;
-      transition: transform 0.3s;
+      transition: all 0.3s ease;
+      position: relative;
     }
+    
     .movie:hover {
-      transform: scale(1.05);
-      background: #333;
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.3);
     }
+    
+    .movie:hover::after {
+      opacity: 1;
+    }
+    
+    .movie::after {
+      content: "Watch Now";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: var(--primary);
+      font-weight: bold;
+      font-size: 1.2rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    
     .movie img {
       width: 100%;
-      height: 280px;
+      height: 350px;
       object-fit: cover;
-      border-radius: 10px;
+      transition: filter 0.3s;
     }
+    
+    .movie:hover img {
+      filter: brightness(0.4);
+    }
+    
     .movie-title {
-      margin-top: 10px;
-      font-size: 1em;
-      font-weight: bold;
+      margin: 15px 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      padding: 0 10px;
+      color: var(--primary);
     }
-  
-    @media (max-width: 600px) {
+    
+    @media (max-width: 768px) {
       .movies {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 20px;
+      }
+      
+      .movie img {
+        height: 260px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .movies {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 15px;
       }
-      .movie {
-        width: 100%;
-        box-sizing: border-box;
-      }
-      .movie img {
-        height: auto;
+      
+      h1 {
+        font-size: 2rem;
       }
     }
-
   </style>
 </head>
 <body>
 
-<h1>🚨 John Wick Universe</h1>
+<header>
+  <h1>John Wick Universe</h1>
+  <p>Explore the complete collection of John Wick films and spin-offs</p>
+</header>
 
 <div class="movies" id="movies"></div>
 
@@ -82,11 +147,13 @@ const movies = [
 
 const container = document.getElementById('movies');
 movies.forEach((movie, index) => {
-  const div = document.createElement('div');
+  const div = document.createElement('article');
   div.className = 'movie';
+  div.setAttribute('role', 'button');
+  div.setAttribute('aria-label', `Watch ${movie.title}`);
   div.innerHTML = `
-    <img src="${movie.image}" alt="${movie.title}">
-    <div class="movie-title">${movie.title}</div>
+    <img src="${movie.image}" alt="${movie.title}" loading="lazy">
+    <h3 class="movie-title">${movie.title}</h3>
   `;
   div.onclick = () => {
     const url = `player.html?title=${encodeURIComponent(movie.title)}&video=${encodeURIComponent(movie.video)}&index=${index}`;
