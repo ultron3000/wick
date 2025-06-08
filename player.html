@@ -23,6 +23,8 @@
       background: #000;
       border-radius: 0.75rem;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
     .video-container video {
       position: absolute;
@@ -33,11 +35,14 @@
     }
     .controls-container {
       transition: opacity 0.3s ease;
+      padding-bottom: 8px;
     }
     .progress-container {
-      height: 5px;
+      height: 8px;
       background: rgba(255, 255, 255, 0.2);
       cursor: pointer;
+      margin-bottom: 12px;
+      touch-action: none;
     }
     .progress-bar {
       height: 100%;
@@ -216,7 +221,7 @@
     </div>
     
     <!-- Additional Info -->
-    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
       <!-- Playback Info -->
       <div class="bg-gray-800 p-4 rounded-lg">
         <h3 class="text-lg font-semibold text-amber-400 mb-2">Playback Information</h3>
@@ -241,7 +246,7 @@
       </div>
       
       <!-- Shortcuts -->
-      <div class="bg-gray-800 p-4 rounded-lg">
+      <div class="bg-gray-800 p-3 md:p-4 rounded-lg">
         <h3 class="text-lg font-semibold text-amber-400 mb-2">Keyboard Shortcuts</h3>
         <div class="space-y-2">
           <div class="flex justify-between">
@@ -268,7 +273,7 @@
       </div>
       
       <!-- Resume Options -->
-      <div class="bg-gray-800 p-4 rounded-lg">
+      <div class="bg-gray-800 p-3 md:p-4 rounded-lg">
         <h3 class="text-lg font-semibold text-amber-400 mb-2">Resume Options</h3>
         <div class="space-y-3">
           <button id="resume-btn" class="w-full bg-amber-500 hover:bg-amber-600 text-black font-medium py-2 px-4 rounded transition">
@@ -395,9 +400,9 @@
       // Keyboard shortcuts
       document.addEventListener('keydown', handleKeyboardShortcuts);
       
-      // Show/hide controls on mouse movement
+      // Show/hide controls on interaction
       let controlsTimeout;
-      videoContainer.addEventListener('mousemove', () => {
+      function showControls() {
         controlsContainer.style.opacity = '1';
         clearTimeout(controlsTimeout);
         controlsTimeout = setTimeout(() => {
@@ -405,7 +410,10 @@
             controlsContainer.style.opacity = '0';
           }
         }, 3000);
-      });
+      }
+      
+      videoContainer.addEventListener('mousemove', showControls);
+      videoContainer.addEventListener('touchstart', showControls);
       
       // Volume hover effect
       volumeBtn.addEventListener('mouseenter', () => {
@@ -767,10 +775,36 @@
     // Update progress while dragging
     function updateProgressOnDrag(e) {
       const rect = progressContainer.getBoundingClientRect();
-      const pos = (e.clientX || e.touches[0].clientX) - rect.left;
+      const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+      if (!clientX) return;
+      
+      const pos = clientX - rect.left;
       const percent = Math.min(Math.max(pos / rect.width, 0), 1);
       progressBar.style.width = `${percent * 100}%`;
       video.currentTime = percent * video.duration;
+      
+      // Show current time preview on mobile
+      if (e.touches) {
+        const previewTime = percent * video.duration;
+        if (!progressContainer.querySelector('.time-preview')) {
+          const preview = document.createElement('div');
+          preview.className = 'time-preview absolute bottom-full mb-2 px-2 py-1 text-xs bg-gray-800 text-white rounded';
+          progressContainer.appendChild(preview);
+        }
+        const preview = progressContainer.querySelector('.time-preview');
+        preview.textContent = formatTime(previewTime);
+        preview.style.left = `${pos}px`;
+        preview.style.transform = 'translateX(-50%)';
+      }
+    }
+
+    // Clean up time preview after dragging
+    function stopDraggingProgress() {
+      isDraggingProgress = false;
+      const preview = progressContainer.querySelector('.time-preview');
+      if (preview) {
+        preview.remove();
+      }
     }
 
     // Resume from last position
