@@ -23,8 +23,6 @@
       background: #000;
       border-radius: 0.75rem;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
     }
     .video-container video {
       position: absolute;
@@ -35,14 +33,11 @@
     }
     .controls-container {
       transition: opacity 0.3s ease;
-      padding-bottom: 8px;
     }
     .progress-container {
-      height: 8px;
+      height: 5px;
       background: rgba(255, 255, 255, 0.2);
       cursor: pointer;
-      margin-bottom: 12px;
-      touch-action: none;
     }
     .progress-bar {
       height: 100%;
@@ -83,37 +78,50 @@
       visibility: visible;
       opacity: 1;
     }
-    @media (max-width: 768px) {
-      .controls-container {
-        padding: 0.5rem;
-      }
-      .control-btn {
-        padding: 0.3rem;
-        min-width: 32px;
-      }
-      .volume-container {
-        display: none;
-      }
-      .mobile-volume {
-        display: block;
-        margin: 8px 0;
-      }
-      /* Improve spacing for mobile controls */
-      #controls-container .flex.items-center {
-        gap: 2px;
-      }
-      /* Hide rewind/forward text on small screens */
-      .progress-container {
-        margin-bottom: 8px;
-      }
-      .tooltip {
-        display: none;
-      }
-      /* Full width bottom bar */
-      .video-container {
-        margin-bottom: 4px;
-      }
+    <style>
+  /* Existing styles... */
+  .tooltip-parent:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  /* ✅ Fullscreen alignment fix */
+  :fullscreen .video-container,
+  .video-container:fullscreen {
+    padding-bottom: 0 !important;
+    height: 100vh !important;
+    width: 100vw !important;
+    border-radius: 0 !important;
+  }
+
+  :fullscreen video,
+  .video-container:fullscreen video {
+    width: 100vw !important;
+    height: 100vh !important;
+    object-fit: cover;
+  }
+
+  .video-container:fullscreen .controls-container {
+    opacity: 1 !important;
+  }
+
+  @media (max-width: 768px) {
+    .controls-container {
+      padding: 0.5rem;
     }
+    .control-btn {
+      padding: 0.5rem;
+    }
+    .volume-container {
+      display: none;
+    }
+    .mobile-volume {
+      display: block;
+    }
+  }
+</style>
+
+   
   </style>
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col items-center p-4 md:p-8">
@@ -129,7 +137,7 @@
     <!-- Header -->
     <div class="flex justify-between items-center mb-4 md:mb-6">
       <h1 id="movie-title" class="text-2xl md:text-3xl font-bold text-amber-400 truncate max-w-xs md:max-w-md">Movie Title</h1>
-      <a href="index.html" class="flex items-center text-gray-300 hover:text-amber-400 transition">
+      <a href="" class="flex items-center text-gray-300 hover:text-amber-400 transition">
         <i class="fas fa-arrow-left mr-2"></i>
         <span class="hidden md:inline">Back to Movies</span>
       </a>
@@ -238,7 +246,7 @@
     </div>
     
     <!-- Additional Info -->
-    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
       <!-- Playback Info -->
       <div class="bg-gray-800 p-4 rounded-lg">
         <h3 class="text-lg font-semibold text-amber-400 mb-2">Playback Information</h3>
@@ -263,7 +271,7 @@
       </div>
       
       <!-- Shortcuts -->
-      <div class="bg-gray-800 p-3 md:p-4 rounded-lg">
+      <div class="bg-gray-800 p-4 rounded-lg">
         <h3 class="text-lg font-semibold text-amber-400 mb-2">Keyboard Shortcuts</h3>
         <div class="space-y-2">
           <div class="flex justify-between">
@@ -290,7 +298,7 @@
       </div>
       
       <!-- Resume Options -->
-      <div class="bg-gray-800 p-3 md:p-4 rounded-lg">
+      <div class="bg-gray-800 p-4 rounded-lg">
         <h3 class="text-lg font-semibold text-amber-400 mb-2">Resume Options</h3>
         <div class="space-y-3">
           <button id="resume-btn" class="w-full bg-amber-500 hover:bg-amber-600 text-black font-medium py-2 px-4 rounded transition">
@@ -417,9 +425,9 @@
       // Keyboard shortcuts
       document.addEventListener('keydown', handleKeyboardShortcuts);
       
-      // Show/hide controls on interaction
+      // Show/hide controls on mouse movement
       let controlsTimeout;
-      function showControls() {
+      videoContainer.addEventListener('mousemove', () => {
         controlsContainer.style.opacity = '1';
         clearTimeout(controlsTimeout);
         controlsTimeout = setTimeout(() => {
@@ -427,10 +435,7 @@
             controlsContainer.style.opacity = '0';
           }
         }, 3000);
-      }
-      
-      videoContainer.addEventListener('mousemove', showControls);
-      videoContainer.addEventListener('touchstart', showControls);
+      });
       
       // Volume hover effect
       volumeBtn.addEventListener('mouseenter', () => {
@@ -708,16 +713,27 @@
       }
     }
 
-    // Toggle fullscreen
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        videoContainer.requestFullscreen().catch(err => {
-          console.error(`Error attempting to enable fullscreen: ${err.message}`);
-        });
-      } else {
-        document.exitFullscreen();
+    // ✅ Fullscreen with auto-rotate on mobile
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    videoContainer.requestFullscreen().then(() => {
+      // Try to lock landscape on supported devices
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock('landscape').catch(() => {});
       }
+    }).catch(err => {
+      console.error(`Error attempting to enable fullscreen: ${err.message}`);
+    });
+  } else {
+    document.exitFullscreen();
+    // Unlock orientation when exiting fullscreen
+    if (screen.orientation && screen.orientation.unlock) {
+      screen.orientation.unlock();
     }
+  }
+}
+
+
 
     // Toggle settings menu
     function toggleMenu(menu) {
@@ -792,36 +808,10 @@
     // Update progress while dragging
     function updateProgressOnDrag(e) {
       const rect = progressContainer.getBoundingClientRect();
-      const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-      if (!clientX) return;
-      
-      const pos = clientX - rect.left;
+      const pos = (e.clientX || e.touches[0].clientX) - rect.left;
       const percent = Math.min(Math.max(pos / rect.width, 0), 1);
       progressBar.style.width = `${percent * 100}%`;
       video.currentTime = percent * video.duration;
-      
-      // Show current time preview on mobile
-      if (e.touches) {
-        const previewTime = percent * video.duration;
-        if (!progressContainer.querySelector('.time-preview')) {
-          const preview = document.createElement('div');
-          preview.className = 'time-preview absolute bottom-full mb-2 px-2 py-1 text-xs bg-gray-800 text-white rounded';
-          progressContainer.appendChild(preview);
-        }
-        const preview = progressContainer.querySelector('.time-preview');
-        preview.textContent = formatTime(previewTime);
-        preview.style.left = `${pos}px`;
-        preview.style.transform = 'translateX(-50%)';
-      }
-    }
-
-    // Clean up time preview after dragging
-    function stopDraggingProgress() {
-      isDraggingProgress = false;
-      const preview = progressContainer.querySelector('.time-preview');
-      if (preview) {
-        preview.remove();
-      }
     }
 
     // Resume from last position
