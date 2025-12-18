@@ -1,111 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cloud TV Player</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cloud TV Player</title>
 
-  <link rel="icon" href="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png">
+<link rel="icon" href="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png" />
 
-  <!-- Shaka Player -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.6.0/shaka-player.ui.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.6.0/controls.min.css">
+<!-- Shaka Player (stable) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.6/shaka-player.compiled.js"></script>
 
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-
-    html, body {
-      width:100%;
-      height:100%;
-      background:#000;
-      overflow:hidden;
-      font-family: system-ui, -apple-system, sans-serif;
-    }
-
-    .shaka-video-container {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    video {
-      width: 100%;
-      height: 100%;
-      background:#000;
-      object-fit: contain;
-    }
-
-    /* Cloud TV Logo */
-    #myLogo {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      width: 120px;
-      z-index: 9999;
-      pointer-events: none;
-    }
-
-    /* Hide Shaka spinner */
-    .shaka-spinner-container,
-    .shaka-spinner,
-    .shaka-spinner-svg {
-      display: none !important;
-    }
-  </style>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:#000;font-family:Arial,Helvetica,sans-serif}
+#container{position:relative;width:100%;height:100%}
+video{width:100%;height:100%;background:#000}
+#logo{
+  position:absolute;
+  top:12px;
+  left:12px;
+  width:120px;
+  z-index:9999;
+  pointer-events:none;
+}
+#error{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#aaa;
+  font-size:16px;
+  text-align:center;
+}
+</style>
 </head>
 <body>
 
-<div class="shaka-video-container" data-shaka-player>
-  <video autoplay muted playsinline></video>
-  <img id="myLogo" src="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png" alt="Cloud TV">
+<div id="container">
+  <video id="video" controls autoplay muted playsinline></video>
+  <img id="logo" src="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png" />
 </div>
 
 <script>
-  const params = new URLSearchParams(window.location.search);
-  const streamUrl = params.get('url');
-  const keyId = params.get('keyId');
-  const key = params.get('key');
+const params = new URLSearchParams(window.location.search);
+const mpdUrl = params.get('url');
+const keyId = params.get('keyId');
+const key = params.get('key');
 
-  async function initPlayer() {
-    shaka.polyfill.installAll();
+const video = document.getElementById('video');
 
-    if (!shaka.Player.isBrowserSupported()) {
-      alert('Browser not supported');
-      return;
+function showError(msg){
+  document.getElementById('container').innerHTML = `<div id="error">${msg}</div>`;
+}
+
+if(!mpdUrl || !keyId || !key){
+  showError('Invalid stream parameters');
+  throw new Error('Missing params');
+}
+
+shaka.polyfill.installAll();
+
+if(!shaka.Player.isBrowserSupported()){
+  showError('Browser not supported');
+  throw new Error('Unsupported browser');
+}
+
+const player = new shaka.Player(video);
+
+player.configure({
+  drm:{
+    clearKeys:{
+      [keyId]: key
     }
-
-    const video = document.querySelector('video');
-    const player = new shaka.Player(video);
-
-    new shaka.ui.Overlay(player, document.querySelector('.shaka-video-container'), video);
-
-    player.configure({
-      drm: {
-        clearKeys: {
-          [keyId]: key
-        }
-      },
-      streaming: {
-        lowLatencyMode: true,
-        bufferingGoal: 15,
-        rebufferingGoal: 2
-      }
-    });
-
-    player.getNetworkingEngine().registerRequestFilter((type, request) => {
-      request.headers['Referer'] = 'https://www.jiotv.com/';
-    });
-
-    try {
-      await player.load(streamUrl);
-    } catch (e) {
-      console.error('Playback error', e);
-      alert('Failed to load stream');
-    }
+  },
+  streaming:{
+    bufferingGoal:20,
+    rebufferingGoal:2
   }
+});
 
-  initPlayer();
+player.getNetworkingEngine().registerRequestFilter((type, request) => {
+  request.headers['Referer'] = 'https://www.jiotv.com/';
+});
+
+player.load(mpdUrl).catch(err => {
+  console.error(err);
+  showError('Failed to load stream');
+});
 </script>
 
 </body>
