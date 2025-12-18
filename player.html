@@ -1,71 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Player</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="referrer" content="no-referrer">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cloud TV – Player</title>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.compiled.min.js"></script>
+  <link rel="icon" href="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png" />
 
-<style>
-html,body{margin:0;height:100%;background:#000}
-video{width:100%;height:100%}
-</style>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: #111;
+      border-bottom: 1px solid #222;
+    }
+
+    header img {
+      height: 36px;
+    }
+
+    header span {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .player-wrapper {
+      position: relative;
+      width: 100%;
+      height: calc(100vh - 58px);
+      background: #000;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .error {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      font-size: 16px;
+      color: #aaa;
+    }
+  </style>
 </head>
-
 <body>
 
-<video id="video" controls autoplay></video>
+<header>
+  <img src="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png" alt="Cloud TV" />
+  <span>Cloud TV</span>
+</header>
+
+<div class="player-wrapper">
+  <iframe id="stream"></iframe>
+</div>
 
 <script>
-/* 🔴 ADD THESE LINES — START */
-shaka.polyfill.installAll();
+const params = new URLSearchParams(window.location.search);
+const channelId = params.get('id');
+const directUrl = params.get('url');
 
-if (!shaka.Player.isBrowserSupported()) {
-  alert("Browser not supported for DRM playback");
-  throw new Error("Shaka unsupported");
+const iframe = document.getElementById('stream');
+
+function showError(msg) {
+  document.querySelector('.player-wrapper').innerHTML = `<div class="error">${msg}</div>`;
 }
-/* 🔴 ADD THESE LINES — END */
 
-const src = new URLSearchParams(location.search).get("src");
-if(!src) alert("No source");
+fetch('./channels.json')
+  .then(r => r.json())
+  .then(data => {
+    let channel;
 
-fetch("jio.m3u")
-.then(r=>r.text())
-.then(txt=>{
-  const lines = txt.split("\n");
-  let mpd="", key="";
-
-  for(let i=0;i<lines.length;i++){
-    if(lines[i].includes(src)){
-      for(let j=i;j>=0;j--){
-        if(lines[j].includes("license_key")){
-          key = lines[j].split("=")[1];
-          break;
-        }
-      }
-      mpd = src;
-      break;
+    if (channelId) {
+      channel = data.find(c => c.id === channelId);
+    } else if (directUrl) {
+      channel = {
+        url: decodeURIComponent(directUrl),
+        keyId: params.get('keyId'),
+        key: params.get('key')
+      };
     }
-  }
 
-  const [kid,k] = key.split(":");
+    if (!channel || !channel.url) {
+      showError('Stream not found');
+      return;
+    }
 
-  const video = document.getElementById("video");
-  const player = new shaka.Player(video);
+    const url = encodeURIComponent(channel.url);
+    const keyId = channel.keyId || '';
+    const key = channel.key || '';
 
-  player.configure({
-    drm:{ clearKeys:{ [kid]:k } }
+    iframe.src = `./s-mpd.html?url=${url}&keyId=${keyId}&key=${key}`;
+  })
+  .catch(err => {
+    console.error(err);
+    showError('Failed to load channel data');
   });
-
-  player.load(mpd).catch(e=>{
-    console.error(e);
-    alert("Playback failed");
-  });
-});
 </script>
-
 
 </body>
 </html>
