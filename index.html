@@ -1,51 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Jio TV</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cloud TV</title>
 
-<style>
-body{margin:0;font-family:Arial;background:#000;color:#fff}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:15px;padding:15px}
-.card{background:#111;border-radius:10px;padding:10px;text-align:center;cursor:pointer}
-.card:hover{background:#222}
-</style>
+  <!-- Logo / Favicon -->
+  <link rel="icon" href="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png" />
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #0b0b0b;
+      color: #fff;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #111;
+      border-bottom: 1px solid #222;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header img {
+      height: 42px;
+      width: auto;
+    }
+
+    header span {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    main {
+      padding: 16px;
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: #000;
+      border: 1px solid #222;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 24px rgba(0,0,0,.6);
+    }
+
+    .logo {
+      height: 110px;
+      background: #fff;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .title {
+      padding: 8px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      background: #0f0f0f;
+      border-top: 1px solid #222;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      opacity: .7;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="grid" id="channels"></div>
+<header>
+  <img src="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png" alt="Cloud TV" />
+  <span>Cloud TV</span>
+</header>
+
+<main>
+  <div id="loading" class="loading">Loading channels...</div>
+  <div id="channels" class="grid"></div>
+</main>
 
 <script>
-fetch("jio.m3u")
-.then(r=>r.text())
-.then(txt=>{
-  const lines = txt.split("\n");
-  let name="", mpd="";
-  const out=[];
+fetch('./channels.json')
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById('loading').style.display = 'none';
+    const grid = document.getElementById('channels');
 
-  lines.forEach(l=>{
-    l=l.trim();
-    if(l.startsWith("#EXTINF")){
-      name=l.split(",")[1];
-    }
-    else if(l.startsWith("http")){
-      mpd=l;
-      out.push({name,mpd});
-    }
+    data.forEach(ch => {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      card.onclick = () => {
+        if (ch.id) {
+          location.href = `player.html?id=${ch.id}`;
+        } else {
+          location.href = `player.html?url=${encodeURIComponent(ch.url)}&keyId=${ch.keyId}&key=${ch.key}`;
+        }
+      };
+
+      card.innerHTML = `
+        <div class="logo" style="background-image:url('${ch.image || ''}')"></div>
+        <div class="title">${ch.title || 'Live Channel'}</div>
+      `;
+
+      grid.appendChild(card);
+    });
+  })
+  .catch(err => {
+    document.getElementById('loading').innerText = 'Failed to load channels';
+    console.error(err);
   });
-
-  document.getElementById("channels").innerHTML =
-    out.map(c=>`
-      <div class="card" onclick="play('${encodeURIComponent(c.mpd)}')">
-        <b>${c.name}</b>
-      </div>`).join("");
-});
-
-function play(src){
-  location.href="player.html?src="+src;
-}
 </script>
 
 </body>
