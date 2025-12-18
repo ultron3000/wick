@@ -19,6 +19,15 @@ video{width:100%;height:100%}
 <video id="video" controls autoplay></video>
 
 <script>
+/* 🔴 ADD THESE LINES — START */
+shaka.polyfill.installAll();
+
+if (!shaka.Player.isBrowserSupported()) {
+  alert("Browser not supported for DRM playback");
+  throw new Error("Shaka unsupported");
+}
+/* 🔴 ADD THESE LINES — END */
+
 const src = new URLSearchParams(location.search).get("src");
 if(!src) alert("No source");
 
@@ -56,6 +65,7 @@ fetch("jio.m3u")
   });
 });
 </script>
+
 
 </body>
 </html>
