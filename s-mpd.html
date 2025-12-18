@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Cloud TV Stream</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.6/shaka-player.compiled.js"></script>
+
+<style>
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  background:#000;
+}
+video{
+  width:100%;
+  height:100%;
+  background:#000;
+}
+#myLogo{
+  position:absolute;
+  top:12px;
+  left:12px;
+  width:120px;
+  z-index:9999;
+  pointer-events:none;
+}
+</style>
+</head>
+
+<body>
+
+<video id="video" autoplay muted controls playsinline></video>
+<img id="myLogo" src="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png">
+
+<script>
+const p = new URLSearchParams(location.search);
+const mpd = p.get('url');
+const keyId = p.get('keyId');
+const key = p.get('key');
+
+if(!mpd || !keyId || !key){
+  document.body.innerHTML = 'Invalid stream parameters';
+  throw new Error('Missing params');
+}
+
+shaka.polyfill.installAll();
+
+if(!shaka.Player.isBrowserSupported()){
+  document.body.innerHTML = 'Browser not supported';
+  throw new Error('Unsupported browser');
+}
+
+const video = document.getElementById('video');
+const player = new shaka.Player(video);
+
+player.configure({
+  drm: {
+    clearKeys: {
+      [keyId]: key
+    }
+  }
+});
+
+// Required for Jio / Star streams
+player.getNetworkingEngine().registerRequestFilter((type, request) => {
+  request.headers['Referer'] = 'https://www.jiotv.com/';
+});
+
+player.load(decodeURIComponent(mpd)).catch(e=>{
+  console.error(e);
+  document.body.innerHTML = 'Failed to load stream';
+});
+</script>
+
+</body>
+</html>
