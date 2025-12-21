@@ -1,104 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cloud TV</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cloud TV</title>
 
-  <!-- Logo / Favicon -->
-  <link rel="icon" href="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png" />
+<link rel="icon" href="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    * { box-sizing: border-box; }
+<style>
+:root {
+  --bg: #050509;
+  --card: #0b0b12;
+  --glass: rgba(255,255,255,.06);
+  --border: rgba(255,255,255,.08);
+  --accent: #00e5ff;
+  --radius: 18px;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #0b0b0b;
-      color: #fff;
-    }
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
 
-    header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      background: #111;
-      border-bottom: 1px solid #222;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  background:
+    radial-gradient(1200px 600px at top, #0b1a2a, transparent),
+    radial-gradient(800px 400px at bottom, #020024, transparent),
+    var(--bg);
+  color: #fff;
+}
 
-    header img {
-      height: 42px;
-      width: auto;
-    }
+/* ===== APP HEADER ===== */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(5,5,9,.65);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+}
 
-    header span {
-      font-size: 20px;
-      font-weight: 700;
-    }
+header img {
+  height: 40px;
+}
 
-    main {
-      padding: 16px;
-      max-width: 1400px;
-      margin: auto;
-    }
+header span {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: .4px;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 14px;
-    }
+/* ===== MAIN ===== */
+main {
+  padding: 14px;
+  max-width: 1600px;
+  margin: auto;
+}
 
-    .card {
-      background: #000;
-      border: 1px solid #222;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: transform .2s ease, box-shadow .2s ease;
-      overflow: hidden;
-    }
+/* ===== GRID ===== */
+.grid {
+  display: grid;
+  gap: 14px;
+}
 
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 24px rgba(0,0,0,.6);
-    }
+/* Mobile */
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
-    .logo {
-      height: 110px;
-      background: #fff;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-    }
+/* Tablet */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 
-    .title {
-      padding: 8px;
-      text-align: center;
-      font-size: 14px;
-      font-weight: 600;
-      background: #0f0f0f;
-      border-top: 1px solid #222;
-    }
+/* Desktop */
+@media (min-width: 1025px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
 
-    .loading {
-      text-align: center;
-      padding: 40px;
-      opacity: .7;
-    }
-  </style>
+/* ===== CARD ===== */
+.card {
+  position: relative;
+  background: linear-gradient(180deg, #101018, #07070c);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 25px rgba(0,0,0,.55);
+  transition: transform .25s ease, box-shadow .25s ease;
+  cursor: pointer;
+}
+
+/* Touch feedback */
+.card:active {
+  transform: scale(.96);
+}
+
+/* Hover (desktop only) */
+@media (hover:hover) {
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 28px 55px rgba(0,0,0,.85);
+  }
+}
+
+/* Glow overlay */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    320px 140px at top,
+    rgba(0,229,255,.22),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity .4s ease;
+  pointer-events: none;
+}
+
+@media (hover:hover) {
+  .card:hover::after {
+    opacity: 1;
+  }
+}
+
+/* ===== LOGO ===== */
+.logo {
+  height: 120px;
+  background: #fff;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: transform .35s ease;
+}
+
+@media (hover:hover) {
+  .card:hover .logo {
+    transform: scale(1.1);
+  }
+}
+
+/* ===== TITLE ===== */
+.title {
+  padding: 10px 8px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  background: rgba(0,0,0,.5);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== LOADING ===== */
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  opacity: .75;
+  font-size: 14px;
+  letter-spacing: .4px;
+}
+</style>
 </head>
+
 <body>
 
 <header>
-  <img src="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png" alt="Cloud TV" />
+  <img src="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png" alt="Cloud TV">
   <span>Cloud TV</span>
 </header>
 
 <main>
-  <div id="loading" class="loading">Loading channels...</div>
+  <div id="loading" class="loading">Loading premium channels…</div>
   <div id="channels" class="grid"></div>
 </main>
 
