@@ -1,6 +1,26 @@
 
-[ 
-  {"id":"Star1HindiHD","title":"Star1 Hindi HD","image":"https://jiotvimages.cdn.jio.com/dare_images/images/Star_Sports_HD1_Hindi.png","url":"https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/output/index.mpd","keyId":"400131994b445d8c8817202248760fda","key":"2d56cb6f07a75b9aff165d534ae2bfc4"},
+
+
+
+[
+
+{"id":"sony_sports_1_hd","title":"Sony Ten Sports 1 HD","logo":"https:\/\/assets-prod.services.toffeelive.com\/f_png,w_300,q_85\/py5j-JQBv9knK3AHxDTY\/posters\/ea3358b9-2bec-4615-a889-daa2e396c74c.webp"},
+{"id":"sony_sports_2_hd","title":"Sony Ten Sports 2 HD","logo":"https:\/\/assets-prod.services.toffeelive.com\/f_png,w_300,q_85\/sy5m-JQBv9knK3AHYTTk\/posters\/a664bf2a-af9c-4e79-89df-50a40a6e3e66.png"},
+{"id":"sony_sports_5_hd","title":"Sony Ten Sports 5 HD ","logo":"https:\/\/assets-prod.services.toffeelive.com\/f_png,w_300,q_85\/vi5n-JQBv9knK3AHqzTC\/posters\/241705c1-06a9-4694-92c6-0013d1879e42.webp"},
+{"id":"ten_cricket","title":"Sony Ten Cricket","logo":"https:\/\/assets-prod.services.toffeelive.com\/f_png,w_300,q_85\/ra2x_pQBrjBfS2_RWG9l\/posters\/795170c2-ec78-457e-9fa0-54a23d23361c.webp"},
+{"id":"euro_sports_hd","title":"Eurosport HD","logo":"https:\/\/assets-prod.services.toffeelive.com\/f_webp,w_240,q_100\/Uy6Q-JQBv9knK3AHcDUQ\/posters\/01709bcd-6d53-4710-a64f-bc49cecf1d61.webp"},
+{"id":"icc_wtc_final","title":"ICC Test Championship Highlights","logo":"https:\/\/assets-prod.services.toffeelive.com\/f_png,w_300,q_85\/PnZefJcBcqxnFHJBoxca\/posters\/14699162-6ec8-4a94-a572-2795c6ddd329.png"},
+{"id":"sonyentertainmnt_hd","title":"Sony Entertainment Television HD","logo":"https:\/\/assets-prod.services.toffeelive.com\/f_png,w_300,q_85\/-y50-JQBv9knK3AHLzSn\/posters\/0ab48ac0-ec84-4ca2-9601-746ff3cb809e.webp"},
+{"id":"sonymax_2","title":"Sony MAX 2","logo":"https:\/\/assets-prod.services.toffeelive.com\/f_png,w_300,q_85\/Ii5_-JQBv9knK3AHLDV3\/posters\/d961cc87-81b6-4b30-8414-8c0af2774818.webp"},
+{"id":"sony_entertainment","title":"Sony Entertainment Television","logo":"https:\/\/assets-prod.services.toffeelive.com\/f_png,w_300,q_85\/2S5t-JQBv9knK3AHJTTW\/posters\/ae74f943-77c9-4395-a16c-8ed84b439080.webp"},
+{"id":"sony_max_hd","title":"Sony MAX HD","logo":"https:\/\/assets-prod.services.toffeelive.com\/f_png,w_300,q_85\/Ai51-JQBv9knK3AH_jWs\/posters\/663e52a6-1a9f-4458-b4aa-7c03d84972f1.webp"},
+{"id":"sonybbc_earth_hd","title":"Sony BBC Earth HD","logo":"https:\/\/assets-prod.services.toffeelive.com\/f_png,w_300,q_85\/MC6C-JQBv9knK3AHUzUT\/posters\/a8c32fd3-2ba7-437c-85ac-de2f1b2fa6ca.webp"},
+{"id":"sonysab_hd","title":"Sony SAB HD","logo":"https:\/\/assets-prod.services.toffeelive.com\/f_png,w_300,q_85\/ES55-JQBv9knK3AHNDWC\/posters\/13411be9-62b9-4a99-a062-b6e91dfb1099.webp"},
+{"id":"sonypix_hd","title":"Sony PIX HD","logo":"https:\/\/assets-prod.services.toffeelive.com\/f_png,w_300,q_85\/Ly6C-JQBv9knK3AHOjXt\/posters\/252e64ca-8d99-46e7-a951-e10c1703c11d.webp"},
+{"id":"sonyyay","title":"Sony YAY","logo":"https:\/\/assets-prod.services.toffeelive.com\/f_png,w_300,q_85\/IC5_-JQBv9knK3AHFDXh\/posters\/36df4012-80f2-4a98-9970-3b663f62093f.webp"},
+{"id":"sonyaath","title":"Sony Aath","logo":"https:\/\/assets-prod.services.toffeelive.com\/f_png,w_300,q_85\/xi6xX5UBv9knK3AH9aMk\/posters\/f4db1c12-b10f-46e8-a09b-e0efb8820970.png"},
+{"id":"sony_max","title":"Sony MAX","logo":"https:\/\/assets-prod.services.toffeelive.com\/f_png,w_300,q_85\/Ay52-JQBv9knK3AHFDWt\/posters\/00afb30b-3c19-4c4c-abd8-891db94e4767.webp"},
+{"id":"Star1HindiHD","title":"Star1 Hindi HD","image":"https://jiotvimages.cdn.jio.com/dare_images/images/Star_Sports_HD1_Hindi.png","url":"https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/output/index.mpd","keyId":"400131994b445d8c8817202248760fda","key":"2d56cb6f07a75b9aff165d534ae2bfc4"},
   {"id":"Star1eng","title":"Star1 eng","image":"https://jiotvimages.cdn.jio.com/dare_images/images/Star_Sports_1.png","url":"https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_BTS/output/index.mpd","keyId":"df20894ec30954d3b28097c138f4cfda","key":"ff9b6292b1cddbd11a046029cb314634"},
   {"id":"Star1engHD","title":"Star1 engHD","image":"https://jiotvimages.cdn.jio.com/dare_images/images/Star_Sports_HD1.png","url":"https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_BTS/output/index.mpd","keyId":"965dc2ddb1d85138ad787999a7f30ca5","key":"859695076e67fe961836b564db6d689c"},
   {"id":"Star1tamil","title":"Star1 tamil","image":"https://jiotvimages.cdn.jio.com/dare_images/images/Star_Sports_1_Tamil.png","url":"https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Tamil_BTS/output/index.mpd","keyId":"d0d750ebd52b5756aa7fb833f61ceece","key":"4ae62a20c030c918aad24193c1dda229"},
@@ -23,3 +43,17 @@
   {"id":"TNTSports3","title":"TNT Sports 3","image":"https://cricstream4u.github.io/cinearena/tnt3.jpg","url":"https://ottb.live.cf.ww.aiv-cdn.net/lhr-nitro/live/dash/enc/lsdasbvglv/out/v1/bb548a3626cd4708afbb94a58d71dce9/cenc.mpd","keyId":"a93c1cbfdccd23233bac13540c693e7f","key":"2f6ab2e6693eb847eff3c9da8f9d01fc"},
   {"id":"TNTSports4","title":"TNT Sports 4","image":"https://cricstream4u.github.io/cinearena/tnt4.jpg","url":"https://ottb.live.cf.ww.aiv-cdn.net/lhr-nitro/live/dash/enc/i2pcjr4pe5/out/v1/912e9db56d75403b8a9ac0a719110f36/cenc.mpd","keyId":"192b1115da041585c77200128549efa1","key":"634e10efe4abbb14be400a3ccbac0258"}
 ]
+
+
+
+
+
+
+
+
+
+
+
+
+            
+            
