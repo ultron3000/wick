@@ -177,33 +177,35 @@ main {
   letter-spacing: .4px;
 }
 
-/* Categories Buttons */
+/* Categories Buttons - Mobile Friendly */
 #categories button {
-  background: linear-gradient(145deg, #00e5ff, #00c8ff);
-  color: white;
+  background: linear-gradient(145deg, #ffeb3b, #fdd835);
+  color: #000;
   border: none;
-  padding: 12px 30px;
-  font-size: 18px;
-  margin: 10px;
+  padding: 8px 18px;          /* smaller padding */
+  font-size: 14px;            /* smaller text */
+  margin: 6px;
   cursor: pointer;
-  border-radius: 30px;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;        /* modern rounded look */
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
   outline: none;
 }
 
+/* Hover (desktop) */
 #categories button:hover {
-  background: linear-gradient(145deg, #00c8ff, #00b3e6);
-  transform: translateY(-4px);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(145deg, #fdd835, #fbc02d);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.22);
 }
 
+/* Active (mobile tap) */
 #categories button:active {
-  background: linear-gradient(145deg, #00b3e6, #00a1cc);
-  transform: translateY(2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(0.96);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
+
 </style>
 </head>
 
