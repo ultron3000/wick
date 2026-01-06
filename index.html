@@ -1,224 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cloud TV</title>
 
-<link rel="icon" href="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png" />
+<link rel="icon" href="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --bg: #050509;
-  --card: #0b0b12;
-  --glass: rgba(255,255,255,.06);
-  --border: rgba(255,255,255,.08);
-  --accent: #00e5ff;
-  --radius: 18px;
+  --bg:#050509;
+  --card:#0b0b12;
+  --border:rgba(255,255,255,.08);
+  --radius:18px;
 }
 
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
+* { box-sizing:border-box; }
 
 body {
-  margin: 0;
-  font-family: 'Inter', system-ui, sans-serif;
-  background:
-    radial-gradient(1200px 600px at top, #0b1a2a, transparent),
-    radial-gradient(800px 400px at bottom, #020024, transparent),
-    var(--bg);
-  color: #fff;
+  margin:0;
+  font-family:Inter,sans-serif;
+  background:var(--bg);
+  color:#fff;
 }
 
-/* ===== APP HEADER ===== */
 header {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-  background: rgba(5,5,9,.65);
-  backdrop-filter: blur(18px);
-  border-bottom: 1px solid var(--border);
+  position:sticky;
+  top:0;
+  z-index:20;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 16px;
+  background:#07070c;
+  border-bottom:1px solid var(--border);
 }
 
-header img {
-  height: 40px;
-}
+header img { height:38px; }
+header span { font-size:20px; font-weight:700; }
 
-header span {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: .4px;
-}
-
-/* ===== MAIN ===== */
 main {
-  padding: 14px;
-  max-width: 1600px;
-  margin: auto;
+  padding:14px;
+  max-width:1600px;
+  margin:auto;
 }
 
-/* ===== GRID ===== */
-.grid {
-  display: grid;
-  gap: 14px;
+/* CATEGORIES */
+#categories {
+  text-align:center;
+  margin-bottom:20px;
 }
-
-/* Mobile */
-@media (max-width: 600px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Tablet */
-@media (min-width: 601px) and (max-width: 1024px) {
-  .grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* Desktop */
-@media (min-width: 1025px) {
-  .grid {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  }
-}
-
-/* ===== CARD ===== */
-.card {
-  position: relative;
-  background: linear-gradient(180deg, #101018, #07070c);
-  border-radius: var(--radius);
-  overflow: hidden;
-  border: 1px solid var(--border);
-  box-shadow: 0 10px 25px rgba(0,0,0,.55);
-  transition: transform .25s ease, box-shadow .25s ease;
-  cursor: pointer;
-}
-
-/* Touch feedback */
-.card:active {
-  transform: scale(.96);
-}
-
-/* Hover (desktop only) */
-@media (hover:hover) {
-  .card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 28px 55px rgba(0,0,0,.85);
-  }
-}
-
-/* Glow overlay */
-.card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    320px 140px at top,
-    rgba(0,229,255,.22),
-    transparent
-  );
-  opacity: 0;
-  transition: opacity .4s ease;
-  pointer-events: none;
-}
-
-@media (hover:hover) {
-  .card:hover::after {
-    opacity: 1;
-  }
-}
-
-/* ===== LOGO ===== */
-.logo {
-  height: 120px;
-  background: #fff;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  transition: transform .35s ease;
-}
-
-@media (hover:hover) {
-  .card:hover .logo {
-    transform: scale(1.1);
-  }
-}
-
-/* ===== TITLE ===== */
-.title {
-  padding: 10px 8px;
-  text-align: center;
-  font-size: 13px;
-  font-weight: 600;
-  background: rgba(0,0,0,.5);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid var(--border);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* ===== LOADING ===== */
-.loading {
-  text-align: center;
-  padding: 60px 20px;
-  opacity: .75;
-  font-size: 14px;
-  letter-spacing: .4px;
-}
-
-/* Categories Buttons - Mobile Friendly */
 #categories button {
-  background: linear-gradient(145deg, #ffeb3b, #fdd835);
-  color: #000;
-  border: none;
-  padding: 8px 18px;          /* smaller padding */
-  font-size: 14px;            /* smaller text */
-  margin: 6px;
-  cursor: pointer;
-  border-radius: 20px;        /* modern rounded look */
-  font-weight: 600;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
-  outline: none;
+  background:linear-gradient(145deg,#ffeb3b,#fdd835);
+  border:none;
+  padding:8px 18px;
+  margin:6px;
+  font-weight:600;
+  border-radius:20px;
+  cursor:pointer;
 }
 
-/* Hover (desktop) */
-#categories button:hover {
-  background: linear-gradient(145deg, #fdd835, #fbc02d);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.22);
+/* GRID */
+.grid {
+  display:grid;
+  gap:14px;
+}
+@media(max-width:600px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:601px){.grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}}
+
+.card {
+  background:var(--card);
+  border-radius:var(--radius);
+  overflow:hidden;
+  border:1px solid var(--border);
+  cursor:pointer;
 }
 
-/* Active (mobile tap) */
-#categories button:active {
-  transform: scale(0.96);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+.logo {
+  height:120px;
+  background:#fff center/contain no-repeat;
 }
 
+.title {
+  padding:8px;
+  text-align:center;
+  font-size:13px;
+  font-weight:600;
+  background:rgba(0,0,0,.4);
+}
+
+/* MODAL */
+#playerModal {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#000;
+  z-index:9999;
+}
+
+#playerFrame {
+  width:100%;
+  height:calc(100% - 70px);
+  border:none;
+}
+
+/* CONTROLS */
+#controls {
+  height:70px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  background:#07070c;
+  border-top:1px solid var(--border);
+}
+
+.btn {
+  background:#111;
+  color:#fff;
+  border:1px solid var(--border);
+  padding:10px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.btn i { margin:0 4px; }
+
+#closeBtn {
+  position:absolute;
+  top:10px;
+  right:10px;
+  z-index:10000;
+  background:#000;
+  color:#fff;
+  border:none;
+  font-size:22px;
+  cursor:pointer;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  <img src="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png" alt="Cloud TV">
+  <img src="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png">
   <span>Cloud TV</span>
 </header>
 
 <main>
-  <!-- Categories Filter -->
-  <div id="categories" style="text-align: center; margin-bottom: 20px;">
+
+  <div id="categories">
     <button onclick="filterCategory('All')">All</button>
     <button onclick="filterCategory('Sports')">Sports</button>
     <button onclick="filterCategory('Movies')">Movies</button>
@@ -226,58 +161,117 @@ main {
     <button onclick="filterCategory('Education')">Education</button>
   </div>
 
-  <div id="loading" class="loading">Loading premium channels…</div>
   <div id="channels" class="grid"></div>
 </main>
 
+<!-- PLAYER MODAL -->
+<div id="playerModal">
+  <button id="closeBtn" onclick="closePlayer()">✕</button>
+
+  <iframe
+    id="playerFrame"
+    allow="autoplay; encrypted-media; fullscreen; picture-in-picture">
+  </iframe>
+
+  <div id="controls">
+    <button id="prevBtn" class="btn"><i class="fas fa-step-backward"></i>Prev</button>
+    <button id="playPauseBtn" class="btn"><i class="fas fa-play"></i>Play</button>
+    <button id="nextBtn" class="btn">Next<i class="fas fa-step-forward"></i></button>
+    <button id="fullscreenBtn" class="btn"><i class="fas fa-expand"></i></button>
+    <button id="muteBtn" class="btn"><i class="fas fa-volume-up"></i></button>
+    <button id="closeBtn" class="btn"><i class="fas fa-times"></i></button>
+  </div>
+</div>
+
 <script>
-  let allChannels = [];
-  
-  fetch('./channels.json')
-    .then(res => res.json())
-    .then(data => {
-      allChannels = data;  // Store the original data
-      displayChannels(allChannels);  // Display all channels initially
-    })
-    .catch(err => {
-      document.getElementById('loading').innerText = 'Failed to load channels';
-      console.error(err);
-    });
+let allChannels = [];
+let currentList = [];
+let currentIndex = 0;
 
-  function displayChannels(channels) {
-    document.getElementById('loading').style.display = 'none';
-    const grid = document.getElementById('channels');
-    grid.innerHTML = '';  // Clear existing channels
-    
-    channels.forEach(ch => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.onclick = () => {
-        if (ch.id) {
-          location.href = `player.html?id=${ch.id}`;
-        } else {
-          location.href = `player.html?url=${encodeURIComponent(ch.url)}&keyId=${ch.keyId}&key=${ch.key}`;
-        }
-      };
+fetch('./channels.json')
+  .then(r => r.json())
+  .then(data => {
+    allChannels = data;
+    currentList = data;
+    render(data);
+  });
 
-      card.innerHTML = `
-        <div class="logo" style="background-image:url('${ch.image || ''}')"></div>
-        <div class="title">${ch.title || 'Live Channel'}</div>
-      `;
+function render(list) {
+  const grid = document.getElementById('channels');
+  grid.innerHTML = '';
+  list.forEach((ch, i) => {
+    const c = document.createElement('div');
+    c.className = 'card';
+    c.innerHTML = `
+      <div class="logo" style="background-image:url('${ch.image}')"></div>
+      <div class="title">${ch.title}</div>
+    `;
+    c.onclick = () => openPlayer(i);
+    grid.appendChild(c);
+  });
+}
 
-      grid.appendChild(card);
-    });
-  }
+function filterCategory(cat) {
+  currentList = cat === 'All'
+    ? allChannels
+    : allChannels.filter(c => c.category === cat);
+  render(currentList);
+}
 
-  function filterCategory(category) {
-    if (category === 'All') {
-      displayChannels(allChannels);
-    } else {
-      const filteredChannels = allChannels.filter(ch => ch.category === category);
-      displayChannels(filteredChannels);
-    }
-  }
+function openPlayer(index) {
+  currentIndex = index;
+  const ch = currentList[index];
+
+  document.getElementById('playerModal').style.display = 'block';
+  document.getElementById('playerFrame').src =
+    `s-mpd.html?url=${encodeURIComponent(ch.url)}&keyId=${ch.keyId}&key=${ch.key}`;
+}
+
+function closePlayer() {
+  const frame = document.getElementById('playerFrame');
+  frame.src = '';
+  document.getElementById('playerModal').style.display = 'none';
+}
+
+/* ===== BUTTON CONTROLS (REAL, WORKING) ===== */
+function getVideo() {
+  const frame = document.getElementById('playerFrame');
+  return frame.contentWindow?.document.querySelector('video');
+}
+
+document.getElementById('playPauseBtn').onclick = () => {
+  const v = getVideo();
+  if (!v) return;
+  if (v.paused) { v.play(); }
+  else { v.pause(); }
+};
+
+document.getElementById('muteBtn').onclick = () => {
+  const v = getVideo();
+  if (!v) return;
+  v.muted = !v.muted;
+};
+
+document.getElementById('fullscreenBtn').onclick = () => {
+  const v = getVideo();
+  if (v?.requestFullscreen) v.requestFullscreen();
+};
+
+document.getElementById('prevBtn').onclick = () => {
+  if (currentIndex > 0) openPlayer(currentIndex - 1);
+};
+
+document.getElementById('nextBtn').onclick = () => {
+  if (currentIndex < currentList.length - 1)
+    openPlayer(currentIndex + 1);
+};
+
+document.getElementById('closeBtn').onclick = () => {
+  closePlayer();
+};
 </script>
+
+
 
 </body>
 </html>
