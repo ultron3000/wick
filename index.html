@@ -179,7 +179,7 @@ main {
     <button id="nextBtn" class="btn">Next<i class="fas fa-step-forward"></i></button>
     <button id="fullscreenBtn" class="btn"><i class="fas fa-expand"></i></button>
     <button id="muteBtn" class="btn"><i class="fas fa-volume-up"></i></button>
-    <button id="closeBtn" class="btn"><i class="fas fa-times"></i></button>
+    <button id="closeCtrlBtn" class="btn"><i class="fas fa-times"></i></button>
   </div>
 </div>
 
@@ -266,7 +266,7 @@ document.getElementById('nextBtn').onclick = () => {
     openPlayer(currentIndex + 1);
 };
 
-document.getElementById('closeBtn').onclick = () => {
+document.getElementById('closeCtrlBtn').onclick = () => {
   closePlayer();
 };
 </script>
