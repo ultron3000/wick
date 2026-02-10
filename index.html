@@ -182,6 +182,7 @@ iframe:-webkit-full-screen {
     <button onclick="filterCategory('Sports')">Sports</button>
     <button onclick="filterCategory('Movies')">Movies</button>
     <button onclick="filterCategory('Entertainment')">Entertainment</button>
+    <button onclick="filterCategory('Education')">Education</button>
   </div>
 
   <div id="channels" class="grid"></div>
@@ -247,7 +248,7 @@ function openPlayer(index) {
 
   document.getElementById('playerModal').style.display = 'block';
   document.getElementById('playerFrame').src =
-    `s-mpd.html?url=${encodeURIComponent(ch.url)}&keyId=${ch.keyId}&key=${ch.key}`;
+  `./s-mpd.html?url=${encodeURIComponent(ch.url)}&keyId=${ch.keyId}&key=${ch.key}`;
 }
 
 function closePlayer() {
