@@ -1,112 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cloud TV – Player</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud TV Player</title>
 
-  <link rel="icon" href="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png" />
+<style>
+body {
+  margin: 0;
+  background: #000;
+  color: white;
+  font-family: Arial;
+}
 
-  <style>
-    * { box-sizing: border-box; }
+header {
+  padding: 10px;
+  background: #111;
+  text-align: center;
+  font-weight: bold;
+}
 
-    body {
-      margin: 0;
-      background: #000;
-      color: #fff;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
-      background: #111;
-      border-bottom: 1px solid #222;
-    }
-
-    header img {
-      height: 36px;
-    }
-
-    header span {
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .player-wrapper {
-      position: relative;
-      width: 100%;
-      height: calc(100vh - 58px);
-      background: #000;
-    }
-
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    .error {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      font-size: 16px;
-      color: #aaa;
-      text-align: center;
-      padding: 20px;
-    }
-  </style>
+iframe {
+  width: 100%;
+  height: calc(100vh - 40px);
+  border: none;
+}
+</style>
 </head>
+
 <body>
 
-<header>
-  <img src="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png" alt="Cloud TV" />
-  <span>Cloud TV</span>
-</header>
+<header id="title">Loading...</header>
 
-<div class="player-wrapper" id="playerArea">
-  <iframe id="player" allow="autoplay; encrypted-media; fullscreen; picture-in-picture"></iframe>
-</div>
+<iframe id="frame"
+allow="autoplay; encrypted-media; fullscreen"
+allowfullscreen></iframe>
 
 <script>
 const params = new URLSearchParams(window.location.search);
-const channelId = params.get('id');
-const iframe = document.getElementById('player');
-const playerArea = document.getElementById('playerArea');
+const stream = params.get("stream");
+const name = params.get("name");
 
-function showError(msg) {
-  playerArea.innerHTML = `<div class=\"error\">${msg}</div>`;
+document.getElementById("title").innerText = name || "Cloud TV";
+
+if (!stream) {
+  document.body.innerHTML =
+    "<h2 style='text-align:center;margin-top:50px;'>Invalid Stream</h2>";
+} else {
+  document.getElementById("frame").src =
+    `s-mpd.html?stream=${encodeURIComponent(stream)}`;
 }
-
-fetch('./channels.json')
-  .then(r => r.json())
-  .then(data => {
-    const channel = data.find(c => c.id === channelId);
-
-    if (!channel) {
-      showError('Channel not found');
-      return;
-    }
-
-    if (!channel.url || !channel.keyId || !channel.key) {
-      showError('Invalid stream data');
-      return;
-    }
-
-    const mpd = encodeURIComponent(channel.url);
-    const keyId = channel.keyId;
-    const key = channel.key;
-
-    // DRM DASH player (works on GitHub Pages)
-    iframe.src = `https://ultron3000.github.io/star-sports/s-mpd.html?url=${mpd}&keyId=${keyId}&key=${key}`;
-  })
-  .catch(err => {
-    console.error(err);
-    showError('Failed to load channel data');
-  });
 </script>
 
 </body>
