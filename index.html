@@ -4,237 +4,240 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cloud TV</title>
-
+<link rel="icon" href="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:"Segoe UI",sans-serif;}
-body{background:#0b0f14;color:#fff;}
+:root {
+  --bg:#050509;
+  --card:#0b0b12;
+  --border:rgba(255,255,255,.08);
+  --radius:18px;
+}
+
+*{box-sizing:border-box;}
+body{margin:0;font-family:Inter,sans-serif;background:var(--bg);color:#fff;}
 
 /* HEADER */
 header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  background:#111;
-  padding:10px 20px;
-  box-shadow:0 5px 15px rgba(0,255,200,0.2);
+  position:sticky;top:0;z-index:20;
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;background:#07070c;border-bottom:1px solid var(--border);
 }
-
-header img{
-  height:40px;
-  border-radius:8px;
-  margin-right:10px;
-}
-
-header h1{
-  font-size:24px;
-  font-weight:bold;
-  color:#00ffcc;
-  flex:1;
-}
-
-/* SEARCH */
+header img{height:38px;}
+header span{font-size:20px;font-weight:700;}
 #searchBar{
+  margin-left:auto;
   padding:7px 12px;
   border-radius:20px;
   border:none;
   outline:none;
   font-size:14px;
-  width:200px;
-  background:#222;
-  color:white;
-  transition:0.2s;
+  background:#222;color:white;
 }
-
-#searchBar:focus{
-  background:#333;
-  box-shadow:0 0 8px #00ffcc;
-}
+#searchBar:focus{background:#333;box-shadow:0 0 8px #00ffcc;}
 
 /* CATEGORIES */
-.categories{
-  display:flex;
-  gap:10px;
-  padding:10px 15px;
-  overflow-x:auto;
-}
-
-.categories button{
-  background:#222;
-  color:white;
-  border:none;
-  padding:8px 15px;
-  border-radius:20px;
-  cursor:pointer;
+#categories{text-align:center;margin:12px 0;}
+#categories button{
+  background:linear-gradient(145deg,#ffeb3b,#fdd835);
+  border:none;padding:8px 18px;margin:6px;font-weight:600;border-radius:20px;cursor:pointer;
   transition:0.2s;
 }
-
-.categories button:hover{
-  background:#00ffcc;
-  color:black;
-}
-
-.categories button.active{
-  background:#00ffcc;
-  color:black;
-}
+#categories button.active{background:#00ffcc;color:#000;}
 
 /* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:15px;
-  padding:15px;
-}
-
+.grid{display:grid;gap:14px;}
+@media(max-width:600px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:601px){.grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}}
 .card{
-  background:#1a1a1a;
-  border-radius:10px;
-  overflow:hidden;
-  cursor:pointer;
-  transition:0.2s;
+  background:var(--card);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);
+  cursor:pointer;transition:0.2s;
 }
-
-.card:hover{
-  transform:scale(1.05);
-}
-
-.card img{
-  width:100%;
-  height:120px;
-  object-fit:contain;
-  background:#000;
-}
-
-.card h3{
-  text-align:center;
-  padding:10px;
-  font-size:14px;
-}
+.card:hover{transform:scale(1.05);}
+.card img{width:100%;height:120px;object-fit:contain;background:#000;}
+.card h3{text-align:center;padding:8px;font-size:14px;font-weight:600;}
 
 /* MODAL PLAYER */
-.modal{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.95);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-  z-index:9999;
+#playerModal{
+  display:none; /* HIDE ON LOAD */
+  position:fixed;inset:0;background:rgba(0,0,0,0.95);
+  z-index:9999;display:flex;flex-direction:column;justify-content:center;align-items:center;
+}
+#playerFrame{
+  width:90%;max-width:1100px;height:70vh;border:none;border-radius:12px;
 }
 
-.close-btn{
-  position:absolute;
-  top:20px;
-  right:25px;
-  font-size:30px;
-  cursor:pointer;
-  color:white;
-  transition:0.2s;
+/* CONTROL PANEL */
+#controls{
+  display:flex;justify-content:center;align-items:center;gap:10px;
+  margin-top:8px;background:#111;padding:8px 10px;border-radius:12px;
+}
+.btn{
+  background:#111;color:#fff;border:1px solid var(--border);
+  padding:8px 12px;border-radius:10px;cursor:pointer;font-size:14px;transition:0.2s;
+}
+.btn:hover{background:#00ffcc;color:#000;}
+.btn i{margin:0 4px;}
+
+/* CLOSE BUTTON TOP */
+#closeBtn{
+  position:absolute;top:10px;right:10px;background:#000;color:#fff;border:none;font-size:22px;cursor:pointer;z-index:10000;
 }
 
-.close-btn:hover{
-  color:#00ffcc;
+/* FULLSCREEN & OBJECT-FIT FIX */
+video:fullscreen, video:-webkit-full-screen, iframe:fullscreen, iframe:-webkit-full-screen{
+  width:100vw !important;height:100vh !important;max-width:100vw !important;max-height:100vh !important;object-fit:contain !important;background:black;
+}
+@media(min-aspect-ratio:16/9){
+  video:fullscreen, video:-webkit-full-screen, iframe:fullscreen, iframe:-webkit-full-screen{object-fit:cover !important;}
 }
 </style>
 </head>
-
 <body>
 
-<!-- HEADER -->
 <header>
   <img src="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png" alt="Cloud TV Logo">
-  <h1>Cloud TV</h1>
+  <span>Cloud TV</span>
   <input type="text" id="searchBar" placeholder="Search channels...">
 </header>
 
-<!-- CATEGORIES -->
-<div class="categories" id="categories"></div>
-
-<!-- GRID -->
-<div class="grid" id="grid"></div>
+<div id="categories"></div>
+<div id="channels" class="grid"></div>
 
 <!-- PLAYER MODAL -->
-<div class="modal" id="modal">
-  <span class="close-btn" onclick="closePlayer()">✖</span>
-  <iframe 
-      id="videoFrame"
-      allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-      allowfullscreen
-      referrerpolicy="no-referrer"
-      style="width:90%;max-width:1100px;height:75vh;border:none;border-radius:12px;">
-  </iframe>
+<div id="playerModal">
+  <button id="closeBtn" onclick="closePlayer()">✖</button>
+  <iframe id="playerFrame" allow="autoplay; encrypted-media; fullscreen; picture-in-picture"></iframe>
+  <div id="controls">
+    <button id="prevBtn" class="btn"><i class="fas fa-step-backward"></i>Prev</button>
+    <button id="playPauseBtn" class="btn"><i class="fas fa-play" id="playIcon"></i></button>
+    <button id="nextBtn" class="btn">Next<i class="fas fa-step-forward"></i></button>
+    <button id="fullscreenBtn" class="btn"><i class="fas fa-expand"></i></button>
+    <button id="muteBtn" class="btn"><i class="fas fa-volume-up" id="muteIcon"></i></button>
+    <button id="closeCtrlBtn" class="btn"><i class="fas fa-times"></i></button> <!-- CLOSE BUTTON NEXT TO VOLUME -->
+  </div>
 </div>
 
 <script>
 let channels = [];
+let filtered = [];
 let currentGroup = "All";
+let currentIndex = 0;
+
+// HIDE modal on load
+window.addEventListener("load",()=>{
+  document.getElementById("playerModal").style.display="none";
+  document.getElementById("playerFrame").src="";
+});
 
 // Load channels.json
 async function loadChannels(){
   const res = await fetch("channels.json");
   channels = await res.json();
+  filtered = channels;
   renderCategories();
   renderChannels();
 }
 
 // Render categories
 function renderCategories(){
-  const groups = ["All", ...new Set(channels.map(c => c.group))];
+  const groups = ["All", ...new Set(channels.map(c=>c.group))];
   const container = document.getElementById("categories");
-  container.innerHTML = "";
-  groups.forEach(group=>{
+  container.innerHTML="";
+  groups.forEach(g=>{
     const btn = document.createElement("button");
-    btn.textContent = group;
-    if(group===currentGroup) btn.classList.add("active");
-    btn.onclick = ()=>{
-      currentGroup = group;
-      renderCategories();
-      renderChannels();
+    btn.textContent=g;
+    if(g===currentGroup) btn.classList.add("active");
+    btn.onclick=()=>{
+      currentGroup=g;
+      filterChannels();
     };
     container.appendChild(btn);
   });
 }
 
+// Filter channels by category + search
+function filterChannels(){
+  const searchTerm = document.getElementById("searchBar").value.toLowerCase();
+  filtered = channels.filter(c=>(currentGroup==="All"||c.group===currentGroup) && c.name.toLowerCase().includes(searchTerm));
+  renderChannels();
+  renderCategories();
+}
+
 // Render channel cards
 function renderChannels(){
-  const grid = document.getElementById("grid");
-  grid.innerHTML = "";
-  const searchTerm = document.getElementById("searchBar").value.toLowerCase();
-
-  channels
-    .filter(c=> (currentGroup==="All"||c.group===currentGroup) && c.name.toLowerCase().includes(searchTerm))
-    .forEach(ch=>{
-      const card = document.createElement("div");
-      card.className="card";
-      card.innerHTML=`<img src="${ch.logo}"><h3>${ch.name}</h3>`;
-      card.onclick=()=>play(ch.link);
-      grid.appendChild(card);
-    });
+  const grid=document.getElementById("channels");
+  grid.innerHTML="";
+  filtered.forEach((ch,i)=>{
+    const card=document.createElement("div");
+    card.className="card";
+    card.innerHTML=`<img src="${ch.logo}"><h3>${ch.name}</h3>`;
+    card.onclick=()=>openPlayer(i);
+    grid.appendChild(card);
+  });
 }
 
-// Play video in modal
-function play(url){
-  document.getElementById("modal").style.display="flex";
-  document.getElementById("videoFrame").src = url;
+// Open modal
+function openPlayer(index){
+  currentIndex=index;
+  const modal=document.getElementById("playerModal");
+  modal.style.display="flex";
+  const frame=document.getElementById("playerFrame");
+  frame.src=filtered[index].link;
+
+  // reset icons
+  document.getElementById("playIcon").className="fas fa-play";
+  document.getElementById("muteIcon").className="fas fa-volume-up";
 }
 
-// Close player
+// Close modal
 function closePlayer(){
-  document.getElementById("modal").style.display="none";
-  document.getElementById("videoFrame").src = "";
+  const frame=document.getElementById("playerFrame");
+  frame.src="";
+  document.getElementById("playerModal").style.display="none";
 }
 
-// Search filter
-document.getElementById("searchBar").addEventListener("input", renderChannels);
+/* ===== CONTROL BUTTONS ===== */
+function getVideo(){return document.getElementById("playerFrame").contentWindow?.document.querySelector('video');}
+
+// Play / Pause toggle
+document.getElementById("playPauseBtn").onclick=()=>{
+  const v=getVideo(); if(!v) return;
+  const icon=document.getElementById("playIcon");
+  if(v.paused){ v.play(); icon.className="fas fa-pause"; } 
+  else{ v.pause(); icon.className="fas fa-play"; }
+};
+
+// Mute / Unmute toggle
+document.getElementById("muteBtn").onclick=()=>{
+  const v=getVideo(); if(!v) return;
+  const icon=document.getElementById("muteIcon");
+  v.muted = !v.muted;
+  icon.className=v.muted?"fas fa-volume-mute":"fas fa-volume-up";
+};
+
+// Fullscreen
+document.getElementById("fullscreenBtn").onclick=()=>{
+  const f=document.getElementById("playerFrame");
+  if(f.requestFullscreen) f.requestFullscreen();
+};
+
+// Previous / Next
+document.getElementById("prevBtn").onclick=()=>{
+  if(currentIndex>0) openPlayer(currentIndex-1);
+};
+document.getElementById("nextBtn").onclick=()=>{
+  if(currentIndex<filtered.length-1) openPlayer(currentIndex+1);
+};
+
+// Close button in control panel
+document.getElementById("closeCtrlBtn").onclick=()=>{closePlayer();};
+
+document.getElementById("searchBar").addEventListener("input",filterChannels);
 
 loadChannels();
 </script>
-
 </body>
 </html>
