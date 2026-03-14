@@ -97,10 +97,24 @@ video:fullscreen, video:-webkit-full-screen, iframe:fullscreen, iframe:-webkit-f
 </head>
 <body>
 
-<header>
-  <img src="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png" alt="Cloud TV Logo">
-  <span>Cloud TV</span>
-  <input type="text" id="searchBar" placeholder="Search channels...">
+<header style="display:flex; align-items:center; gap:15px;">
+
+  <!-- Clickable Logo + Title -->
+  <a href="https://ultron3000.github.io/ultron" 
+     style="display:flex; align-items:center; gap:8px; text-decoration:none; color:inherit;">
+    
+    <img 
+      src="https://static.readdy.ai/image/0ece273271e400e488b9947cb1e99e9a/a79b6f32c71c4ee2094ead0eb9c84c9b.png" 
+      alt="Cloud TV Logo"
+      style="cursor:pointer;"
+    >
+    
+    <span>Cloud TV</span>
+  </a>
+
+  <!-- Search Bar -->
+  <input type="text" id="searchBar" placeholder="Search channels..." style="margin-left:auto;">
+
 </header>
 
 <div id="categories"></div>
@@ -134,7 +148,7 @@ window.addEventListener("load",()=>{
 
 // Load channels.json
 async function loadChannels(){
-  const res = await fetch("channels.json");
+  const res = await fetch("https://raw.githubusercontent.com/vaathala00/jow/main/output.json?t=" + Date.now());
   channels = await res.json();
   filtered = channels;
   renderCategories();
